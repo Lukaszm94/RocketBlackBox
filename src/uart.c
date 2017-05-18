@@ -32,7 +32,7 @@ void UART_init()
 
 	USART_InitTypeDef uart;
 	USART_StructInit(&uart);
-	uart.USART_BaudRate = 57600;
+	uart.USART_BaudRate = 9600;
 	USART_Init(USART1, &uart);
 
 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
@@ -64,6 +64,13 @@ void UART_sendInt(int value)
 uint8_t UART_isAvailable()
 {
 	return (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == SET);
+}
+
+void UART_clear_input()
+{
+	if(UART_isAvailable()) {
+		UART_readChar();
+	}
 }
 
 char UART_readChar()

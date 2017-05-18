@@ -20,6 +20,7 @@ void UART_sendChar(char c);
 void UART_sendString(char* str);
 void UART_sendInt(int value);
 uint8_t UART_isAvailable();
+void UART_clear_input();
 char UART_readChar();
 //int __io_putchar(int c); // needed by printf
 
