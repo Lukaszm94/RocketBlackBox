@@ -119,6 +119,12 @@ void mm_dump_memory()
 #endif
 		return;
 	}
+	if(current_data_head_address > MM_MAX_ADDRESS) { //error
+#if DEBUG
+		UART_sendString("Cannot dump memory, head_addres > MM_MAX_ADDRESS\n");
+#endif
+		return;
+	}
 	uint32_t bytes_to_read = current_data_head_address - MM_DATA_START_ADDRESS_OFFSET;
 	uint32_t current_address = MM_DATA_START_ADDRESS_OFFSET;
 	uint32_t sectors = bytes_to_read / 256;
@@ -131,7 +137,7 @@ void mm_dump_memory()
 		memory_read(current_address, (uint8_t*)buffer, 256);
 		current_address += 256;
 		uint16_t j = 0;
-		for(j = 0; j < 256; j++) {
+		for(j = 0; j < 255; j++) {
 			UART_sendChar(buffer[j]);
 		}
 	}

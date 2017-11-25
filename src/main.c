@@ -66,6 +66,9 @@ void perform_startup_sequence()
 	if(!buttons_is_button_pressed(BUTTON_1)) {
 		return;
 	}
+#if DEBUG
+	UART_sendString("Release the button\n");
+#endif
 	delay(2000);
 	if(buttons_is_button_pressed(BUTTON_1)) {
 		return;
@@ -106,7 +109,13 @@ void perform_startup_sequence()
 		}
 	}
 	if(erase) {
+#if DEBUG
+	UART_sendString("Begin erasing memory\n");
+#endif
 		mm_reset_memory();
+#if DEBUG
+	UART_sendString("Memory erased\n");
+#endif
 	}
 }
 
@@ -121,6 +130,7 @@ int main(void)
 	ring_buffer_init(&usart_rx_buffer);
 	mm_init();
 	perform_startup_sequence();
+	//mm_reset_memory();
 
 	for(;;) {
 		if(ring_buffer_num_items(&usart_rx_buffer) >= (RING_BUFFER_SIZE - 1)) {
